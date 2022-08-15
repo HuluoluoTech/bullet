@@ -7,7 +7,8 @@ endif ()
 set(PROJECTNAME bullet)
 project(${PROJECTNAME})
 
-set(CMAKE_CXX_COMPILER "/usr/bin/g++-11")
+
+# message(STATUS "${BOOST_DIR}/stage/lib")
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
@@ -16,11 +17,21 @@ set(CMAKE_CXX_FLAGSD "${CMAKE_CXX_FLAGS} -O0 -Wall -g -ggdb")
 aux_source_directory(src DIR_MAIN_SRCS)
 add_executable(${PROJECTNAME} ${DIR_MAIN_SRCS})
 
-message(STATUS ${CMAKE_CURRENT_SOURXE_DIR})
-target_include_directories(${PROJECTNAME} PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/>)
+link_directories(
+	AFTER
+	${CMAKE_CURRENT_SOURCE_DIR}/libs
+	${BOOST_DIR}/stage/lib
+)
 
-TARGET_LINK_LIBRARIES(${PROJECTNAME} -lglfw)
-TARGET_LINK_LIBRARIES(${PROJECTNAME} -lpthread)
-TARGET_LINK_LIBRARIES(${PROJECTNAME} -ldl)
-TARGET_LINK_LIBRARIES(${PROJECTNAME} -lGL)
+target_include_directories(
+	${PROJECTNAME} PUBLIC
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/>
+	$<BUILD_INTERFACE:${BOOST_DIR}/>
+)
+
+# Boost
+target_link_libraries(${PROJECTNAME} -lboost_filesystem)
+target_link_libraries(${PROJECTNAME} -lboost_system)
+
+target_link_libraries(${PROJECTNAME} -lpthread)
+target_link_libraries(${PROJECTNAME} -ldl)
