@@ -19,7 +19,7 @@ add_executable(${PROJECTNAME} ${DIR_MAIN_SRCS})
 
 link_directories(
 	AFTER
-	${CMAKE_CURRENT_SOURCE_DIR}/libs
+	# ${CMAKE_CURRENT_SOURCE_DIR}/libs
 	${BOOST_DIR}/stage/lib
 )
 

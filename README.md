@@ -1,9 +1,5 @@
 # bullet
-bullet engine system application
-
-## Setup ENV
-1/ download glad.zip. Opengl 3.3 - Core   
-2/ `sudo apt install libglfw3-dev`  
+WIP
 
 ## How to run
 ```shell

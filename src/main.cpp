@@ -1,11 +1,12 @@
 #include <iostream>
 #include <boost/asio.hpp>
+#include <bullet.h>
 
 using namespace boost;
 
 int main(void)
 {
-    std::cout << "Hello world." << std::endl;
+    std::cout << "Hello world." << MAX_HUB << std::endl;
 
     // Step 1. Assume that the client application has already
     // obtained the IP-address and the protocol port number.
