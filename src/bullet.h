@@ -11,5 +11,7 @@ namespace Bullet {
             std::string GetName() {
                 return name;
             }
+
+            void Start();
     };
 }

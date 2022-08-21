@@ -1,8 +1,17 @@
-#include <bullet.h>
+#include "bullet.h"
 #include <iostream>
 #include <login.pb.h>
+#include "server.h"
 
 void test()
 {
     google::protobuf::ShutdownProtobufLibrary();	//删除所有已分配的内存（Protobuf使用的堆内存）
+}
+
+namespace Bullet
+{
+    void Bullet::Start()
+    {
+        HANDLER_LOCATION;
+    }
 }
