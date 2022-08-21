@@ -8,6 +8,7 @@ int main(void)
 
     Bullet::Bullet* b = new Bullet::Bullet();
     std::cout << b->GetName() << std::endl;
+    
     b->Start();
     
     return 0;
