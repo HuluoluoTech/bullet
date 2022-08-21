@@ -177,21 +177,23 @@ public:
 		// Create and start Acceptor.
 		acc.reset(new Acceptor(m_ios, port_num));
 		acc->Start();
-		m_ios.run();
 
 		// Create specified number of threads and
 		// add them to the pool.
-		// for (unsigned int i = 0; i < thread_pool_size; i++) {
-		// 	std::unique_ptr<std::thread> th(
-		// 	new std::thread([this]()
-		// 	{
-		// 		m_ios.run();
-		// 	}));
+		for (unsigned int i = 0; i < thread_pool_size; i++) {
+			std::unique_ptr<std::thread> th(
+				new std::thread([this]()
+				{
+					m_ios.run();
+				})
+			);
 			
-		// 	m_thread_pool.push_back(std::move(th));
+			// It blocks the current thread until the execution of the thread is completed on which join() is called.
+			// Segmentation fault (core dumped)
+			th->join();
 
-		// 	th->join();
-		// }
+			m_thread_pool.push_back(std::move(th));
+		}
 	}
 		
 	// Stop the server.
@@ -199,9 +201,9 @@ public:
 		acc->Stop();
 		m_ios.stop();
 
-		for (auto& th : m_thread_pool) {
-			th->join();
-		}
+		// for (auto& th : m_thread_pool) {
+		// 	th->join();
+		// }
 	}
 
 private:
