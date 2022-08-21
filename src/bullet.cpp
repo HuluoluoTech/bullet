@@ -22,6 +22,8 @@ namespace Bullet
             if (thread_pool_size == 0)
                 thread_pool_size = Config::DEFAULT_THREAD_POOL_SIZE;
 
+            BOOST_LOG_TRIVIAL(trace) << "Listening on port : " << port_num << std::endl;
+
             srv.Start(port_num, thread_pool_size);
 
             // std::this_thread::sleep_for(std::chrono::seconds(60));

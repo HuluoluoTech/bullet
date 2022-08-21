@@ -67,9 +67,9 @@ private:
 
 	void onResponseSent(const boost::system::error_code& ec, std::size_t bytes_transferred) {
 		if (ec) {
-		std::cout << "Error occured! Error code = "
-		<< ec.value()
-		<< ". Message: " << ec.message();
+			std::cout << "Error occured! Error code = "
+			<< ec.value()
+			<< ". Message: " << ec.message();
 		}
 
 		onFinish();
