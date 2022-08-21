@@ -1,12 +1,16 @@
 #include <iostream>
 #include <boost/asio.hpp>
 #include <bullet.h>
+#include <config.h>
 
 using namespace boost;
 
 int main(void)
 {
-    std::cout << "Hello world." << MAX_HUB << std::endl;
+    std::cout << "Hello world." << Bullet::Config::MAX_HUB << std::endl;
+
+    Bullet::Bullet* b = new Bullet::Bullet();
+    std::cout << b->GetName() << std::endl;
 
     // Step 1. Assume that the client application has already
     // obtained the IP-address and the protocol port number.
