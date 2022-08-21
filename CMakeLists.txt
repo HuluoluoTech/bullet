@@ -12,6 +12,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
 set(CMAKE_CXX_FLAGSD "${CMAKE_CXX_FLAGS} -O0 -Wall -g -ggdb")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG")
 
 # Add protobuf
 # https://cmake.org/cmake/help/latest/module/FindProtobuf.html
@@ -42,4 +43,6 @@ target_link_libraries(${PROJECTNAME} -lboost_system)
 
 target_link_libraries(${PROJECTNAME} -lpthread)
 target_link_libraries(${PROJECTNAME} -ldl)
+
+# protobuf
 target_link_libraries(${PROJECTNAME} ${Protobuf_LIBRARIES})
