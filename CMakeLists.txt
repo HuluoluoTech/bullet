@@ -23,11 +23,14 @@ add_executable(${PROJECTNAME} ${DIR_MAIN_SRCS} ${PROTO_SRCS})
 # Add protobuf
 # https://cmake.org/cmake/help/latest/module/FindProtobuf.html
 find_package(Protobuf REQUIRED)
-include_directories(${Protobuf_INCLUDE_DIRS})
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS protoc/bullet.proto)
+if(Protobuf_FOUND)
+	include_directories(${Protobuf_INCLUDE_DIRS})
+	include_directories(${CMAKE_CURRENT_BINARY_DIR})
+	protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS protoc/bullet.proto)
+	target_link_libraries(${PROJECTNAME} ${Protobuf_LIBRARIES})
+endif()
 
-# set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_LIBS ON)
 # set(Boost_NO_SYSTEM_PATHS ON)
 # if (Boost_NO_SYSTEM_PATHS)
 # 	message(STATUS ${BOOST_ROOT})
@@ -36,7 +39,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS protoc/bullet.proto)
 # endif (Boost_NO_SYSTEM_PATHS)
 
 # cmake -DBoost_DIR=${Boost_DIR}  ..
-find_package (Boost 1.79 NO_DEFAULT_PATH COMPONENTS system log log_setup filesystem thread REQUIRED)
+find_package (Boost 1.79 NO_DEFAULT_PATH COMPONENTS system log log_setup filesystem thread)
 if(Boost_FOUND)
 	include_directories(${Boost_INCLUDE_DIRS})
 	target_link_libraries(${PROJECTNAME} ${Boost_LIBRARIES})
@@ -52,14 +55,6 @@ target_include_directories(
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
 	$<BUILD_INTERFACE:${CMAKE_BINARY_DIR}/>
 )
-
-######################################
-#
-# link_libraries
-#
-######################################
-# protobuf
-target_link_libraries(${PROJECTNAME} ${Protobuf_LIBRARIES})
 
 # Common
 target_link_libraries(${PROJECTNAME} -lpthread)
