@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package bullet;
+
+message Login
+{
+    int32  id       = 1;
+    string playerid = 2;
+    string password = 3;
+}
+

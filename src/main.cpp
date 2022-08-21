@@ -12,6 +12,10 @@ int main(void)
     Bullet::Bullet* b = new Bullet::Bullet();
     std::cout << b->GetName() << std::endl;
 
+    // Login* login = new Login();
+    // login->set_id(3);
+    // std::cout << "get id : " << login->id() << std::endl;
+
     // Step 1. Assume that the client application has already
     // obtained the IP-address and the protocol port number.
     std::string raw_ip_address = "127.0.0.1";
