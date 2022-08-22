@@ -8,7 +8,7 @@ namespace Bullet
             const std::source_location location = 
                 std::source_location::current())
     {
-        std::cout << "file: "
+        std::cout << "File: "
                 << location.file_name() << "("
                 << location.line() << ":"
                 << location.column() << ") `"

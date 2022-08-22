@@ -1,6 +1,6 @@
 #include "bullet.h"
 #include <iostream>
-#include <login.pb.h>
+#include "bullet.pb.h"
 #include "server.h"
 #include "config.h"
 
@@ -35,6 +35,5 @@ namespace Bullet
             <<e.code() << ". Message: "
             <<e.what();
         }
-
     }
 }
