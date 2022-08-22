@@ -1,5 +1,7 @@
 #include <boost/asio.hpp>
 #include <iostream>
+#include <packet.h>
+#include "bullet.pb.h"
 
 using namespace boost;
 using boost::asio::ip::tcp;
@@ -28,7 +30,15 @@ public:
             + std::to_string(duration_sec)
             + "\n";
 
-        sendRequest(request);
+        // sendRequest(request);
+
+        bullet::Login lg = bullet::Login();
+        lg.set_id(1);
+        lg.set_playerid("333");
+
+        Bullet::Packet packet(1);
+        packet.SerializeToBuffer(lg);
+        SendPacket(&packet);
 
         return receiveResponse();
     };
@@ -38,13 +48,29 @@ private:
         asio::write(m_sock, asio::buffer(request));
     }
 
+    void SendPacket(Bullet::Packet* packet) 
+    {
+        std::cout << "Write..." << std::endl;
+        char* data = packet->GetBuffer();
+        size_t size = sizeof(data);
+        asio::write(m_sock, boost::asio::buffer(data, size));
+    }
+
     std::string receiveResponse() {
+        // asio::streambuf buf;
+        // asio::read_until(m_sock, buf, '\n');
+        // std::istream input(&buf);
+        // std::string response;
+        // std::getline(input, response);
+        // return response;
+
         asio::streambuf buf;
-        asio::read_until(m_sock, buf, '\n');
-        std::istream input(&buf);
-        std::string response;
-        std::getline(input, response);
-        return response;
+        asio::read(m_sock, buf, boost::asio::transfer_all());
+        
+        boost::asio::streambuf::const_buffers_type cbt = buf.data();
+        std::string data(boost::asio::buffers_begin(cbt), boost::asio::buffers_end(cbt));
+        std::cout << data << std::endl;
+        return data;
     }
 
 private:

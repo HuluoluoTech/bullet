@@ -27,21 +27,36 @@ public:
 	{}
 
 	void StartHandling() {
-		asio::async_read_until(*m_sock.get(),
-		m_request,
-		'\n',
-		[this](
-		const boost::system::error_code& ec,
-		std::size_t bytes_transferred)
-		{
-			onRequestReceived(ec,
-			bytes_transferred);
+		std::cout << "starting handle..." << std::endl;
+
+		// asio::async_read_until(*m_sock.get(),
+		// m_request,
+		// '\n',
+		// [this](
+		// const boost::system::error_code& ec,
+		// std::size_t bytes_transferred)
+		// {
+		// 	onRequestReceived(ec,
+		// 	bytes_transferred);
+		// });
+
+		boost::asio::streambuf buf;
+		// asio::async_read(*m_sock.get(), buf, [this](
+		// const boost::system::error_code& ec, std::size_t bytes_transferred)
+		// {
+		// 	std::cout << "ec: " << bytes_transferred << std::endl;
+		// 	onRequestReceived(ec, bytes_transferred);
+		// });
+
+		 asio::async_read(*m_sock.get(), buf,
+                    boost::asio::transfer_all(), [this](const boost::system::error_code& ec, std::size_t bytes_transferred) {
+			std::cout << "bytes_transferred: " << bytes_transferred << std::endl;
+			onRequestReceived(ec, bytes_transferred);
 		});
 	}
 			
 private:
-	void onRequestReceived(const boost::system::error_code& ec,
-	std::size_t bytes_transferred) {
+	void onRequestReceived(const boost::system::error_code& ec, std::size_t bytes_transferred) {
 		if (ec) {
 			std::cout << "Error occured! Error code = "
 			<< ec.value()
@@ -60,8 +75,7 @@ private:
 		const boost::system::error_code& ec,
 		std::size_t bytes_transferred)
 		{
-		onResponseSent(ec,
-		bytes_transferred);
+			onResponseSent(ec, bytes_transferred);
 		});
 	}
 
@@ -72,7 +86,7 @@ private:
 			<< ". Message: " << ec.message();
 		}
 
-		onFinish();
+		// onFinish();
 	}
 
 	// Here we perform the cleanup.

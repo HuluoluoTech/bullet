@@ -22,7 +22,14 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ../protoc/bullet.proto)
 
 aux_source_directory(. DIR_MAIN_SRCS)
-add_executable(${PROJECTNAME} ${DIR_MAIN_SRCS} ${PROTO_SRCS})
+add_executable(${PROJECTNAME} ${DIR_MAIN_SRCS} ${PROTO_SRCS} ../src/packet.cpp ../src/buffer.cpp)
+
+set(Boost_USE_STATIC_LIBS ON)
+find_package (Boost 1.79 NO_DEFAULT_PATH COMPONENTS system log log_setup filesystem thread)
+if(Boost_FOUND)
+	include_directories(${Boost_INCLUDE_DIRS})
+	target_link_libraries(${PROJECTNAME} ${Boost_LIBRARIES})
+endif()
 
 link_directories(
 	AFTER
@@ -30,15 +37,13 @@ link_directories(
 	${BOOST_DIR}/stage/lib
 )
 
+include_directories(../src/)
+
 target_include_directories(
 	${PROJECTNAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/>
 	$<BUILD_INTERFACE:${BOOST_DIR}/>
 )
-
-# Boost
-target_link_libraries(${PROJECTNAME} -lboost_filesystem)
-target_link_libraries(${PROJECTNAME} -lboost_system)
 
 target_link_libraries(${PROJECTNAME} -lpthread)
 target_link_libraries(${PROJECTNAME} -ldl)
