@@ -1,5 +1,6 @@
 #include "packet.h"
 #include <sstream> // std::ostream
+#include <cstring>
 
 namespace Bullet 
 {
@@ -35,6 +36,17 @@ void Packet::Base()
 	m_msgId = 0;
 	_beginIndex = 0;
 	_endIndex = 0;
+}
+
+void Packet::AddBuffer(const char* pBuffer, const unsigned int size)
+{
+	while (GetEmptySize() < size)
+	{		
+		ReAllocBuffer();
+	}
+
+	::memcpy(_buffer, pBuffer, size);
+	FillData(size);
 }
 
 void Packet::CleanBuffer()

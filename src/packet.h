@@ -30,7 +30,7 @@ public:
 
     void Base() override;
 
-    void AppendBuffer(const char* pBuffer);
+    // void AppendBuffer(const char* pBuffer);
     void ClearBuffer();
 
     MsgID GetMsgID();
@@ -57,6 +57,7 @@ public:
 		FillData(total);
     }
 
+	void AddBuffer(const char* pBuffer, const unsigned int size);
 
 	void CleanBuffer();
 

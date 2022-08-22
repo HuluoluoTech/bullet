@@ -15,6 +15,8 @@
 #include <boost/asio.hpp>
 #include "log.h"
 #include <thread>
+#include <bullet.pb.h>
+#include "packet.h"
 
 using namespace boost;
 
@@ -40,43 +42,45 @@ public:
 		// 	bytes_transferred);
 		// });
 
-		boost::asio::streambuf buf;
-		// asio::async_read(*m_sock.get(), buf, [this](
-		// const boost::system::error_code& ec, std::size_t bytes_transferred)
-		// {
-		// 	std::cout << "ec: " << bytes_transferred << std::endl;
-		// 	onRequestReceived(ec, bytes_transferred);
-		// });
-
-		 asio::async_read(*m_sock.get(), buf,
-                    boost::asio::transfer_all(), [this](const boost::system::error_code& ec, std::size_t bytes_transferred) {
+		asio::async_read(*m_sock.get(), m_request, [this](
+		const boost::system::error_code& ec, std::size_t bytes_transferred)
+		{
 			std::cout << "bytes_transferred: " << bytes_transferred << std::endl;
 			onRequestReceived(ec, bytes_transferred);
 		});
+
+		//  asio::async_read(*m_sock.get(), buf,
+        //             boost::asio::transfer_all(), [this](const boost::system::error_code& ec, std::size_t bytes_transferred) {
+		// 	std::cout << "bytes_transferred: " << bytes_transferred << std::endl;
+		// 	onRequestReceived(ec, bytes_transferred);
+		// });
 	}
 			
 private:
 	void onRequestReceived(const boost::system::error_code& ec, std::size_t bytes_transferred) {
-		if (ec) {
-			std::cout << "Error occured! Error code = "
-			<< ec.value()
-			<< ". Message: " << ec.message();
-			onFinish();
-			return;
-		
-		}
+		std::cout << "ec: " << ec.value() << std::endl;
+		// if (ec) {
+		// 	std::cout << "Error occured! Error code = "
+		// 	<< ec.value()
+		// 	<< ". Message: " << ec.message();
+		// 	onFinish();
+		// 	return;
+		// }
 
 		// Process the request.
 		m_response = ProcessRequest(m_request);
+		std::cout << "m_response: " << m_response << std::endl;
 		// Initiate asynchronous write operation.
-		asio::async_write(*m_sock.get(),
-		asio::buffer(m_response),
+		size_t size = m_response.size();
+		std::cout << "m response size: " << m_response.size() << std::endl;
+		
+		asio::async_write(*m_sock.get(), asio::buffer(m_response, size),
 		[this](
-		const boost::system::error_code& ec,
-		std::size_t bytes_transferred)
+		const boost::system::error_code& ec, std::size_t bytes_transferred)
 		{
 			onResponseSent(ec, bytes_transferred);
-		});
+		}
+		);
 	}
 
 	void onResponseSent(const boost::system::error_code& ec, std::size_t bytes_transferred) {
@@ -91,7 +95,7 @@ private:
 
 	// Here we perform the cleanup.
 	void onFinish() {
-		delete this;
+		// delete this;
 	}
 
 	std::string ProcessRequest(asio::streambuf& request) {
@@ -105,6 +109,17 @@ private:
 		// Emulate operations that block the thread
 		// (e.g. synch I/O operations).
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+		{
+			boost::asio::streambuf::const_buffers_type cbt = request.data();
+			std::string data(boost::asio::buffers_begin(cbt), boost::asio::buffers_end(cbt));
+			std::cout << data << std::endl;
+
+			Packet p;
+			p.AddBuffer(data.c_str(), data.size());
+			auto pp = p.DeserializeToProto<bullet::Login>();
+			std::cout << "playerid : " << pp.playerid() << std::endl;
+		}
 
 		// Prepare and return the response message.
 		std::string response = "HI, Response\n";

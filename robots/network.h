@@ -53,7 +53,9 @@ private:
         std::cout << "Write..." << std::endl;
         char* data = packet->GetBuffer();
         size_t size = sizeof(data);
+        std::cout << "size: " << size << std::endl;
         asio::write(m_sock, boost::asio::buffer(data, size));
+        // asio::write(m_sock, boost::asio::buffer("AAA"));
     }
 
     std::string receiveResponse() {
@@ -63,6 +65,12 @@ private:
         // std::string response;
         // std::getline(input, response);
         // return response;
+
+        std::cout << "receive response..." << std::endl;
+
+        int size = 0;
+        boost::asio::read(m_sock, boost::asio::buffer(&size, sizeof(uint8_t)));
+        std::cout << size << std::endl;
 
         asio::streambuf buf;
         asio::read(m_sock, buf, boost::asio::transfer_all());
