@@ -42,7 +42,7 @@ public:
 		// 	bytes_transferred);
 		// });
 
-		asio::async_read(*m_sock.get(), m_request, [this](
+		asio::async_read(*m_sock.get(), m_request, boost::asio::transfer_at_least(1),  [this](
 		const boost::system::error_code& ec, std::size_t bytes_transferred)
 		{
 			std::cout << "bytes_transferred: " << bytes_transferred << std::endl;
@@ -119,6 +119,9 @@ private:
 			p.AddBuffer(data.c_str(), data.size());
 			auto pp = p.DeserializeToProto<bullet::Login>();
 			std::cout << "playerid : " << pp.playerid() << std::endl;
+
+			p.SerializeToBuffer(pp);
+			return std::string(p.GetBuffer(), data.size());
 		}
 
 		// Prepare and return the response message.
@@ -138,7 +141,9 @@ public:
 	m_ios(ios),
 	m_acceptor(m_ios, asio::ip::tcp::endpoint(asio::ip::address_v4::any(), port_num)),
 	m_isStopped(false)
-	{}
+	{
+		m_acceptor.set_option(boost::asio::ip::tcp::acceptor::reuse_address( true ));
+	}
 		
 	// Start accepting incoming connection requests.
 	void Start() {

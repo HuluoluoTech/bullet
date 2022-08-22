@@ -54,7 +54,14 @@ private:
         char* data = packet->GetBuffer();
         size_t size = sizeof(data);
         std::cout << "size: " << size << std::endl;
-        asio::write(m_sock, boost::asio::buffer(data, size));
+        asio::write(m_sock, asio::buffer(data, size));
+        std::cout << "Write Done." << std::endl;
+        // boost::system::error_code ec;
+        // asio::async_write(m_sock, boost::asio::buffer(data, size), [this](const boost::system::error_code& ec, std::size_t bytes_transferred)
+        //     {
+        //         std::cout << "write done, ec = " << ec.value() << std::endl;
+        //     }
+        // );
         // asio::write(m_sock, boost::asio::buffer("AAA"));
     }
 
@@ -73,7 +80,7 @@ private:
         std::cout << size << std::endl;
 
         asio::streambuf buf;
-        asio::read(m_sock, buf, boost::asio::transfer_all());
+        asio::read(m_sock, buf, boost::asio::transfer_at_least(1));
         
         boost::asio::streambuf::const_buffers_type cbt = buf.data();
         std::string data(boost::asio::buffers_begin(cbt), boost::asio::buffers_end(cbt));
