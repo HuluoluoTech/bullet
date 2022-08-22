@@ -1,6 +1,5 @@
 #pragma once
 
-#include <iostream>
 #include "base.h"
 #include <boost/asio.hpp>
 #include "packet.h"
@@ -23,7 +22,6 @@ private:
 
 private:
 	std::shared_ptr<boost::asio::ip::tcp::socket> m_sock;
-	std::string m_response;
-	boost::asio::streambuf m_request;
+	boost::asio::streambuf m_streambuf;
 };
 }

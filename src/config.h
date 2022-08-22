@@ -1,7 +1,5 @@
 #pragma once
 
-#include <boost/log/trivial.hpp>
-
 namespace Bullet 
 {
     namespace Config

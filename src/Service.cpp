@@ -4,7 +4,7 @@
 namespace Bullet
 {
 void Service::StartHandling() {
-    boost::asio::async_read(*m_sock.get(), m_request, boost::asio::transfer_at_least(1),  
+    boost::asio::async_read(*m_sock.get(), m_streambuf, boost::asio::transfer_at_least(1),  
         [this](const boost::system::error_code& ec, std::size_t bytes_transferred)
         {
             std::cout << "bytes_transferred: " << bytes_transferred << std::endl;
@@ -15,8 +15,7 @@ void Service::StartHandling() {
 
 void Service::onRequestReceived(const boost::system::error_code& ec, std::size_t bytes_transferred) {
     // Process the request.
-    // m_response = ProcessRequest(m_request);
-    auto p = ProcessRequest(m_request);
+    auto p = ProcessRequest(m_streambuf);
 
     // Initiate asynchronous write operation.
     size_t size = p.GetDataLength();		
@@ -33,7 +32,8 @@ void Service::onRequestReceived(const boost::system::error_code& ec, std::size_t
 
 void Service::onResponseSent(const boost::system::error_code& ec, std::size_t bytes_transferred) {
     if (ec) {
-        std::cout << "Error occured! Error code = "
+        std::cout 
+        << "Error occured! Error code = "
         << ec.value()
         << ". Message: " << ec.message();
     }

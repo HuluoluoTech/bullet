@@ -6,7 +6,8 @@
 
 namespace Bullet
 {
-#define SOCKET boost::asio::ip::tcp::socket
+using SOCKET = boost::asio::ip::tcp::socket;
+
 class Service;
 
 class NetworkMgr : public IBase

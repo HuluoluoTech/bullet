@@ -1,6 +1,5 @@
 #pragma once
 
-// #include <boost/asio/streambuf.hpp>
 #include <iostream>
 #include "buffer.h"
 
@@ -16,7 +15,7 @@ struct PacketHead {
 
 #pragma pack(pop)
 
-#define DEFAULT_PACKET_BUFFER_SIZE	1024 * 10
+const int DEFAULT_PACKET_BUFFER_SIZE = 1024 * 10;
 
 using MsgID = unsigned short;
 using DataLen = size_t;
@@ -30,7 +29,6 @@ public:
 
     void Base() override;
 
-    // void AppendBuffer(const char* pBuffer);
     void ClearBuffer();
 
     MsgID GetMsgID();
@@ -68,7 +66,6 @@ public:
 
 private:
     MsgID m_msgId;
-    // boost::asio::streambuf *m_streambuf;
     char* buff;
 };
 }

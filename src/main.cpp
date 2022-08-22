@@ -5,9 +5,7 @@
 int main(void)
 {
     Bullet::Bullet* b = new Bullet::Bullet();
-    std::cout << "Service Name: " << b->GetName() << std::endl;
-
     b->Start();
     
-    return 0;
+    exit(EXIT_SUCCESS);
 }

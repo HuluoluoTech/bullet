@@ -1,22 +1,16 @@
 #pragma once
 
-// #include <cstdlib>
-// #include <iostream>
-// #include <utility>
 #include <boost/asio.hpp>
-#include <thread>
 #include <bullet.pb.h>
 #include "packet.h"
 #include "NetworkMgr.h"
 #include "Service.h"
 
-using namespace boost;
-
 namespace Bullet 
 {
 class Acceptor {
 public:
-	Acceptor(asio::io_service&ios, unsigned short port_num);
+	Acceptor(boost::asio::io_service&ios, unsigned short port_num);
 		
 	// Start accepting incoming connection requests.
 	void Start();
@@ -26,11 +20,11 @@ public:
 
 private:
 	void InitAccept();
-	void onAccept(const boost::system::error_code& ec, std::shared_ptr<asio::ip::tcp::socket> sock);
+	void onAccept(const boost::system::error_code& ec, std::shared_ptr<boost::asio::ip::tcp::socket> sock);
 
 private:
-	asio::io_service& m_ios;
-	asio::ip::tcp::acceptor m_acceptor;
+	boost::asio::io_service& m_ios;
+	boost::asio::ip::tcp::acceptor m_acceptor;
 	std::atomic<bool> m_isStopped;
 };
 
@@ -44,8 +38,8 @@ public:
 	void Stop();
 
 private:
-	asio::io_service m_ios;
-	std::unique_ptr<asio::io_service::work>m_work;
+	boost::asio::io_service m_ios;
+	std::unique_ptr<boost::asio::io_service::work>m_work;
 	std::unique_ptr<Acceptor>acc;
 	std::vector<std::unique_ptr<std::thread>>m_thread_pool;
 };

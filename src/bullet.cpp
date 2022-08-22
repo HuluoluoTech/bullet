@@ -23,7 +23,8 @@ namespace Bullet
             if (thread_pool_size == 0)
                 thread_pool_size = Config::DEFAULT_THREAD_POOL_SIZE;
 
-            BOOST_LOG_TRIVIAL(trace) << "Listening on port : " << port_num << std::endl;
+            
+            Log::debug("Listening on port : " + std::to_string(port_num));
 
             srv.Start(port_num, thread_pool_size);
 
@@ -31,10 +32,9 @@ namespace Bullet
 
             // srv.Stop();
         }
-        catch (system::system_error&e) {
-            std::cout << "Error occured! Error code = "
-            <<e.code() << ". Message: "
-            <<e.what();
+        catch (boost::system::system_error &e) {
+            std::string reason = std::string("Error occured! Error code = ") + std::to_string(e.code().value()) + ". Message: " + std::string(e.what());
+            Log::info(reason);
         }
     }
 }
