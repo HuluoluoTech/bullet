@@ -66,6 +66,7 @@ Packet Service::ProcessRequest(boost::asio::streambuf& request) {
     p.AddBuffer(data.c_str(), data.size());
     auto pp = p.DeserializeToProto<bullet::Login>();
     p.SerializeToBuffer(pp);
+    std::cout << p.GetMsgId() << std::endl;
     std::cout << pp.id() << std::endl;
     std::cout << pp.playerid() << std::endl;
     std::cout << pp.password() << std::endl;

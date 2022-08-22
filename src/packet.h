@@ -30,9 +30,7 @@ public:
     void Base() override;
 
     void ClearBuffer();
-
-    MsgID GetMsgID();
-
+	
     template<class ProtoClass>
     ProtoClass DeserializeToProto()
     {
@@ -60,7 +58,7 @@ public:
 
 	char* GetBuffer() const;
 	unsigned short GetDataLength() const;
-	int GetMsgId() const;
+	MsgID GetMsgId() const;
 	void FillData(unsigned int size);
 	void ReAllocBuffer();
 

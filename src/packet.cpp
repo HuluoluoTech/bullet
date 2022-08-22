@@ -18,6 +18,7 @@ Packet::Packet()
 Packet::Packet(const MsgID msgId)
 {
 	m_msgId = msgId;
+	
 	CleanBuffer();
 
 	_bufferSize = DEFAULT_PACKET_BUFFER_SIZE;
@@ -69,7 +70,7 @@ unsigned short Packet::GetDataLength() const
 	return _endIndex - _beginIndex;
 }
 
-int Packet::GetMsgId() const
+MsgID Packet::GetMsgId() const
 {
 	return m_msgId;
 }
