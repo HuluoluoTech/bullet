@@ -34,7 +34,6 @@ public:
     void ClearBuffer();
 
     MsgID GetMsgID();
-    DataLen GetBufferDataLen();
 
     template<class ProtoClass>
     ProtoClass DeserializeToProto()
