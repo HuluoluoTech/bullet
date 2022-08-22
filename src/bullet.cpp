@@ -1,8 +1,9 @@
 #include "bullet.h"
 #include <iostream>
 #include "bullet.pb.h"
-#include "server.h"
+#include "Server.h"
 #include "config.h"
+#include "Log.h"
 
 void test()
 {
@@ -13,7 +14,7 @@ namespace Bullet
 {
     void Bullet::Start()
     {
-        HANDLER_LOCATION;
+        Log::debug("Bullet started...");
 
         unsigned short port_num = Config::PORT;
         try {
