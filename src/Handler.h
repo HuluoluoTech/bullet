@@ -9,19 +9,19 @@ struct Handler
     // template <class JsonValue>
     // using Method = std::function <Status (Context&, JsonValue&)>;
 
-    const char* name_;
+    const char* m_name;
 };
 
 class HandlerTable
 {
 public:
     void AddHandler();
-    const Handler* GetHandler(std::string const& name);
+    const Handler* GetHandler(std::string const& name) { return new Handler{"Handler"}; }
 };
 
 HandlerTable HANDLERS({});
 
-const Handler* getHandler(std::string const& name) {
+const Handler* GetHandler(std::string const& name) {
     return HANDLERS.GetHandler(name);
 }
 
