@@ -34,6 +34,17 @@ if(Boost_FOUND)
 	target_link_libraries(${PROJECTNAME} ${Boost_LIBRARIES})
 endif()
 
+if (NOT CMAKE_BUILD_TYPE)
+#    set (CMAKE_BUILD_TYPE "RelWithDebInfo")
+   set (CMAKE_BUILD_TYPE "Debug")
+   message (STATUS "No CMAKE_BUILD_TYPE selected, defaulting to ${CMAKE_BUILD_TYPE}")
+endif()
+# iff Debug mode needs ASIO_HANDLER_TRACKING
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+	message (STATUS "Debug selected")
+	add_definitions(-DBOOST_ASIO_ENABLE_HANDLER_TRACKING)
+endif ()
+
 # link_directories(
 # 	AFTER
 # 	${CMAKE_CURRENT_SOURCE_DIR}/libs
