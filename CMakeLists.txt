@@ -5,7 +5,7 @@ if (POLICY CMP0074)
 endif ()
 
 set(PROJECTNAME bullet)
-project(${PROJECTNAME})
+project(${PROJECTNAME} VERSION 0.1.0)
 
 # message(STATUS "${BOOST_ROOT}/stage/lib")
 set(CMAKE_CXX_STANDARD 20)
@@ -35,9 +35,8 @@ if(Boost_FOUND)
 endif()
 
 if (NOT CMAKE_BUILD_TYPE)
-#    set (CMAKE_BUILD_TYPE "RelWithDebInfo")
-   set (CMAKE_BUILD_TYPE "Debug")
-   message (STATUS "No CMAKE_BUILD_TYPE selected, defaulting to ${CMAKE_BUILD_TYPE}")
+	set (CMAKE_BUILD_TYPE "Debug")
+	message (STATUS "No CMAKE_BUILD_TYPE selected, defaulting to ${CMAKE_BUILD_TYPE}")
 endif()
 # iff Debug mode needs ASIO_HANDLER_TRACKING
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
